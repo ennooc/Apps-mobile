@@ -1,50 +1,73 @@
-# Welcome to your Expo app 👋
+# 🌐 Location Tracker & 🎄 ASCII Tree App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+App móvil hecha con **React Native + Expo**, que incluye dos ejercicios:
 
-## Get started
+- 📍 **Tracking de ubicación**: guarda, visualiza, exporta y abre ubicaciones geográficas.
+- 🎄 **Árbol de Navidad ASCII**: imprime en pantalla un árbol con alineación precisa, usando el código más corto posible.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ Características
 
-2. Start the app
+### 📍 Location Tracker
+- Guarda la ubicación GPS actual (lat, lng, timestamp).
+- Muestra mapa en vivo con ubicación actual.
+- Lista de ubicaciones previas con mini mapas.
+- Botones animados con feedback visual.
+- Exporta historial como archivo `.csv`.
+- Abre coordenadas en Google Maps o Apple Maps.
 
-   ```bash
-    npx expo start
-   ```
+### 🎄 Árbol de Navidad
+- Usa caracteres `*` y `0` para formar un árbol.
+- Centrado visualmente en la pantalla.
+- Compatible en iOS y Android.
+- Tipografía monoespaciada para alineación perfecta.
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🚀 Tecnologías usadas
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `expo-location`: acceso a GPS.
+- `react-native-maps`: render de mapas y marcadores.
+- `expo-router`: navegación entre pantallas.
+- `AsyncStorage`: persistencia local.
+- `expo-file-system` + `expo-sharing`: exportar CSV.
+- `expo-linking`: abrir coordenadas en apps externas.
+- `react-native-reanimated`: animaciones.
+- `SpaceMono`: fuente monospace para el árbol.
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 📁 Estructura
 
-```bash
-npm run reset-project
+```
+app/
+ ├── index.tsx         # Mapa actual y botones
+ ├── locations.tsx     # Historial de ubicaciones
+ ├── explore.tsx       # Árbol navideño en ASCII
+components/
+ ├── ActionButton.tsx  # Botón animado reutilizable
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🥪 Cómo correr el proyecto
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm install
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+🔐 Requiere permisos de ubicación.
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## ✅ Autor
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Creado por **Enoc Aguilar** como parte de un reto técnico móvil con geolocalización y lógica visual.
+
+---
+
+## 📲 Demo
+
+Disponible para pruebas en **Expo Go** o como build con **EAS**.
