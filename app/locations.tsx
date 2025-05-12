@@ -15,6 +15,10 @@ import MapView, { Marker } from "react-native-maps";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { Stack } from "expo-router";
+import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
 interface LocationData {
   latitude: number;
@@ -24,6 +28,8 @@ interface LocationData {
 
 export default function LocationsScreen() {
   const [locations, setLocations] = useState<LocationData[]>([]);
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme ?? "light"];
 
   useEffect(() => {
     (async () => {
@@ -74,15 +80,15 @@ export default function LocationsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Stack.Screen options={{ title: "Ubicaciones" }} />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <Stack.Screen options={{ title: "Ubicaciones", headerBackTitle: "Volver" }} />
       <View style={styles.inner}>
-        <Text style={styles.title}>Ubicaciones guardadas</Text>
+        <Text style={[styles.title, { color: theme.text }]}>Ubicaciones guardadas</Text>
         <FlatList
           data={locations}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <View style={styles.item}>
+            <View style={[styles.item, { backgroundColor: theme.surface }]}>
               <MapView
                 style={styles.map}
                 initialRegion={{
@@ -101,37 +107,31 @@ export default function LocationsScreen() {
                   }}
                 />
               </MapView>
-              <Text style={styles.coord}>
-                Latitud: {item.latitude.toFixed(5)}
-              </Text>
-              <Text style={styles.coord}>
-                Longitud: {item.longitude.toFixed(5)}
-              </Text>
-              <Text style={styles.time}>
-                Fecha: {new Date(item.timestamp).toLocaleString()}
-              </Text>
-              <TouchableOpacity
-                onPress={() => handleOpenMaps(item.latitude, item.longitude)}
-              >
+              <Text style={[styles.coord, { color: theme.text }]}>Latitud: {item.latitude.toFixed(5)}</Text>
+              <Text style={[styles.coord, { color: theme.text }]}>Longitud: {item.longitude.toFixed(5)}</Text>
+              <Text style={styles.time}>Fecha: {new Date(item.timestamp).toLocaleString()}</Text>
+              <TouchableOpacity onPress={() => handleOpenMaps(item.latitude, item.longitude)}>
                 <Text style={styles.link}>Ver en mapa</Text>
               </TouchableOpacity>
             </View>
           )}
-          ListEmptyComponent={<Text>No hay ubicaciones aún.</Text>}
+          ListEmptyComponent={<Text style={{ color: theme.text }}>No hay ubicaciones aún.</Text>}
         />
         {locations.length > 0 && (
           <View style={styles.buttonRow}>
             <TouchableOpacity
-              style={[styles.softButton, styles.redButton]}
+              style={[styles.outlineButton, { borderColor: theme.danger }]}
               onPress={handleClearAll}
             >
-              <Text style={styles.redText}>Eliminar todo</Text>
+              <FontAwesome name="trash" size={16} color={theme.danger} style={styles.icon} />
+              <Text style={[styles.outlineText, { color: theme.danger }]}>Eliminar todo</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.softButton, styles.blueButton]}
+              style={[styles.outlineButton, { borderColor: theme.primary }]}
               onPress={handleExportCSV}
             >
-              <Text style={styles.blueText}>Exportar CSV</Text>
+              <FontAwesome5 name="file-export" size={16} color={theme.primary} style={styles.icon} />
+              <Text style={[styles.outlineText, { color: theme.primary }]}>Exportar CSV</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -143,7 +143,6 @@ export default function LocationsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   inner: {
     flex: 1,
@@ -158,7 +157,6 @@ const styles = StyleSheet.create({
   item: {
     padding: 12,
     marginBottom: 16,
-    backgroundColor: "#f3f3f3",
     borderRadius: 12,
   },
   map: {
@@ -178,12 +176,6 @@ const styles = StyleSheet.create({
     color: "#007bff",
     fontWeight: "bold",
   },
-  actions: {
-    marginTop: 24,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 12,
-  },
   buttonRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -192,46 +184,23 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
   },
-  softButton: {
+  outlineButton: {
     flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1.5,
+    borderRadius: 12,
     paddingVertical: 10,
     paddingHorizontal: 14,
-    borderRadius: 12,
     marginHorizontal: 6,
-    alignItems: "center",
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
+    backgroundColor: "#fff",
   },
-  redButton: {
-    backgroundColor: "#ffe5e5",
-  },
-  blueButton: {
-    backgroundColor: "#e6f0ff",
-  },
-  redText: {
-    color: "#cc0000",
+  outlineText: {
     fontWeight: "600",
+    fontSize: 15,
   },
-  blueText: {
-    color: "#0057d9",
-    fontWeight: "600",
-  },
-
-  clearText: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  exportText: {
-    color: "#fff",
-    fontWeight: "600",
+  icon: {
+    marginRight: 8,
   },
 });

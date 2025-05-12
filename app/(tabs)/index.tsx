@@ -12,7 +12,7 @@ import MapView, { Marker, Region } from "react-native-maps";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 
 interface LocationData {
   latitude: number;
@@ -175,44 +175,47 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <MapView style={styles.map} region={region}>
-        <Marker coordinate={region} title="Tu ubicación actual" />
-      </MapView>
-      <View style={styles.buttonContainerLeft}>
-        <ActionButton
-          icon="map-pin"
-          label="Ubicación actual"
-          onPress={handleSaveLocation}
-          animateIcon
-        />
-      </View>
-      <View style={styles.buttonContainerRight}>
-        <ActionButton
-          icon="refresh-ccw"
-          label="Actualizar"
-          onPress={updateLocation}
-          animateIcon
-        />
-      </View>
-      <View style={styles.buttonContainerTopRight}>
-        <ActionButton
-          icon="list"
-          label="Ver ubicaciones"
-          onPress={() => {
-            router.push({
-              pathname: "/locations",
-              params: {
-                latitude: location.coords.latitude.toString(),
-                longitude: location.coords.longitude.toString(),
-                timestamp: location.timestamp.toString(),
-              },
-            });
-          }}
-          animateIcon
-        />
-      </View>
-    </SafeAreaView>
+    <>
+      <Stack.Screen options={{ title: "Ubicaciones" }} />
+      <SafeAreaView style={styles.container}>
+        <MapView style={styles.map} region={region}>
+          <Marker coordinate={region} title="Tu ubicación actual" />
+        </MapView>
+        <View style={styles.buttonContainerLeft}>
+          <ActionButton
+            icon="map-pin"
+            label="Ubicación actual"
+            onPress={handleSaveLocation}
+            animateIcon
+          />
+        </View>
+        <View style={styles.buttonContainerRight}>
+          <ActionButton
+            icon="refresh-ccw"
+            label="Actualizar"
+            onPress={updateLocation}
+            animateIcon
+          />
+        </View>
+        {/* <View style={styles.buttonContainerTopRight}>
+      <ActionButton
+        icon="list"
+        label="Ver ubicaciones"
+        onPress={() => {
+          router.push({
+            pathname: "/locations",
+            params: {
+              latitude: location.coords.latitude.toString(),
+              longitude: location.coords.longitude.toString(),
+              timestamp: location.timestamp.toString(),
+            },
+          });
+        }}
+        animateIcon
+      />
+    </View> */}
+      </SafeAreaView>
+    </>
   );
 }
 
@@ -264,5 +267,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 8,
+  },
+  buttonContainerTopLeft: {
+    position: "absolute",
+    top: Platform.OS === "ios" ? 60 : 30,
+    left: 20,
+    zIndex: 9999,
   },
 });
